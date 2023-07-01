@@ -2,16 +2,20 @@ from tkinter import Label, CENTER, Entry, DISABLED, Text
 from tkinter.constants import BOTTOM, X, RIGHT, Y, LEFT, BOTH, END
 from tkinter.ttk import Combobox, Button, Frame, Scrollbar, Style
 
+from app_strings.app_strings import widgets_font, style_name, foreground_color, button_calc_hash_text, \
+    button_calc_diff_text, label_choice_text, combobox_values, label_filepath_text, select_button_text, \
+    hash_button_text, save_button_text, label_filepath_csv_text, select_button_csv_text
+
 
 class BaseFrame(Frame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.master = kwargs['master']
-        self.widgets_font = 'helvetica 10'
-        self.button_style = Style(self).configure('My.TButton',
-                                              font=self.widgets_font,
-                                              foreground='black',
-                                              justify=CENTER)
+        self.widgets_font = widgets_font
+        self.button_style = Style(self).configure(style_name,
+                                                  font=self.widgets_font,
+                                                  foreground=foreground_color,
+                                                  justify=CENTER)
         self.make_widgets()
 
     def make_widgets(self):
@@ -21,12 +25,12 @@ class BaseFrame(Frame):
 class MainMenuFrame(BaseFrame):
     def make_widgets(self):
         self.button_calc_hash = Button(self,
-                                       style='My.TButton',
-                                       text='Вычислить HASH файла/\nдиректории',
+                                       style=style_name,
+                                       text=button_calc_hash_text,
                                        command=self.master.get_hash)
         self.button_calc_diff = Button(self,
                                        style='My.TButton',
-                                       text='Вычислить разницу файлов/\nдиректорий',
+                                       text=button_calc_diff_text,
                                        command=self.master.get_diff)
         self.button_calc_hash.pack(anchor='center', pady=90)
         self.button_calc_diff.pack(anchor='center', )
@@ -35,21 +39,21 @@ class MainMenuFrame(BaseFrame):
 class FileFrame(BaseFrame):
     def make_widgets(self):
         self.label_choice = Label(self,
-                                  text='Выберите с чего будет снята контрольная сумма:',
+                                  text=label_choice_text,
                                   font=self.widgets_font)
         self.label_choice.place(x=5, y=27)
-        self.combobox = Combobox(self, values=['Файл', 'Директория'],
+        self.combobox = Combobox(self, values=combobox_values,
                                  justify=CENTER, font=self.widgets_font, width=18)
         self.combobox.place(x=310, y=28)
-        self.label_filepath = Label(self, text='Путь до файла/директории:',
+        self.label_filepath = Label(self, text=label_filepath_text,
                                     font=self.widgets_font)
         self.label_filepath.place(x=5, y=63)
         self.entry_filepath = Entry(self, width=47, font=self.widgets_font,
                                     justify=CENTER)
         self.entry_filepath.place(x=5, y=90)
         self.select_button = Button(self,
-                                    style='My.TButton',
-                                    text='Выберите файл/\nдиректорию',
+                                    style=style_name,
+                                    text=select_button_text,
                                     command=self.master.show_file_system)
         self.select_button.place(x=350, y=80)
 
@@ -57,13 +61,13 @@ class FileFrame(BaseFrame):
 class HashFrame(BaseFrame):
     def make_widgets(self):
         self.hash_button = Button(self,
-                                  style='My.TButton',
-                                  text='Вычислить контрольную\nсумму',
+                                  style=style_name,
+                                  text=hash_button_text,
                                   command=self.master.start_calc_hash,
                                   state=DISABLED)
         self.save_button = Button(self,
-                                  style='My.TButton',
-                                  text='Сохранить',
+                                  style=style_name,
+                                  text=save_button_text,
                                   command=self.master.save_hash,
                                   state=DISABLED)
         self.save_button.place(x=360, y=10)
@@ -96,14 +100,14 @@ class FileDiffFrame(FileFrame):
     def make_widgets(self):
         super().make_widgets()
         self.select_button.place(x=350, y=80)
-        self.label_filepath_csv = Label(self, text='Путь до csv файла',
-                                    font=self.widgets_font)
+        self.label_filepath_csv = Label(self, text=label_filepath_csv_text,
+                                        font=self.widgets_font)
         self.label_filepath_csv.place(x=5, y=113)
         self.entry_filepath_csv = Entry(self, width=47, font=self.widgets_font,
-                                     justify=CENTER)
+                                        justify=CENTER)
         self.entry_filepath_csv.place(x=5, y=140)
         self.select_button_csv = Button(self,
-                                     style='My.TButton',
-                                     text='Выберите csv\nфайл',
-                                     command=self.master.show_file_system_csv)
-        self.select_button_csv.place(x=358, y=130)
+                                        style=style_name,
+                                        text=select_button_csv_text,
+                                        command=self.master.show_file_system_csv)
+        self.select_button_csv.place(x=357, y=130)

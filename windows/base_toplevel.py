@@ -3,6 +3,9 @@ from queue import Queue
 from tkinter import ACTIVE, DISABLED, END, INSERT, Toplevel, filedialog
 from tkinter.messagebox import showinfo, showwarning
 
+from app_strings.app_strings import successful_message, combo_warning_massage, filepath_warning_massage, \
+    showwarning_title, showinfo_save_title, successful_message_save_format, file_str, showinfo_end_title, \
+    successful_message_end_format
 from functional.calc_hash import Hash
 from functional.work_with_csv import CSVSaver
 
@@ -17,15 +20,15 @@ class BaseToplevel(Toplevel):
         self.title(title)
         self.geometry(size)
         self.resizable(False, False)
-        self.successful_message = "Контрольная сумма успешно {}"
-        self.combo_warning_massage = "Выберите с чего будет снята\nконтрольная сумма"
-        self.filepath_warning_massage = "Пустой файл или директория"
+        self.successful_message = successful_message
+        self.combo_warning_massage = combo_warning_massage
+        self.filepath_warning_massage = filepath_warning_massage
         self.flag = False
         self.info = ''
         self.make_file_frame()
         self.make_hash_frame()
         self.make_info_frame()
-        self.wm_protocol("WM_DELETE_WINDOW", self.on_close)
+        self.wm_protocol('WM_DELETE_WINDOW', self.on_close)
 
     def show_file_system(self):
         self.file_frame.entry_filepath.delete(0, END)
@@ -38,10 +41,10 @@ class BaseToplevel(Toplevel):
                 self.file_frame.entry_filepath.insert(0, self.path)
                 self.flag = True
         except ComboboxError:
-            showwarning(title="Предупреждение",
+            showwarning(title=showwarning_title,
                         message=self.combo_warning_massage)
         except EmptyFilepathError:
-            showwarning(title="Предупреждение",
+            showwarning(title=showwarning_title,
                         message=self.filepath_warning_massage)
 
     def start_calc_hash(self):
@@ -65,10 +68,10 @@ class BaseToplevel(Toplevel):
             if self.is_not_empty_filepath(filepath):
                 saver = CSVSaver(filepath, self.info)
                 saver.save()
-                showinfo(title='Успешное сохранение',
-                         message=self.successful_message.format('сохранена'))
+                showinfo(title=showinfo_save_title,
+                         message=self.successful_message.format(successful_message_save_format))
         except EmptyFilepathError:
-            showwarning(title="Предупреждение",
+            showwarning(title=showwarning_title,
                         message=self.filepath_warning_massage)
 
     def on_close(self):
@@ -77,7 +80,7 @@ class BaseToplevel(Toplevel):
 
     def is_file(self, combobox):
         if file := combobox.get():
-            if file == 'Файл':
+            if file == file_str:
                 return True
             return False
         raise ComboboxError
@@ -97,8 +100,8 @@ class BaseToplevel(Toplevel):
             self.after(self.ms_refresh, self.poll_queue)
         else:
             self.thread.join()
-            showinfo(title='Успешное завершение',
-                     message=self.successful_message.format('снята'))
+            showinfo(title=showinfo_end_title,
+                     message=self.successful_message.format(successful_message_end_format))
             self.change_state(True)
             self.get_info()
 

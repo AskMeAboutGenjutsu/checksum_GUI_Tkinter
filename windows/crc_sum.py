@@ -2,6 +2,8 @@ import threading
 from tkinter import SOLID, filedialog, END, DISABLED, ACTIVE, INSERT
 from tkinter.messagebox import showwarning, showinfo
 
+from app_strings.app_strings import successful_message_end_format, showinfo_end_title, showwarning_title, \
+    successful_message_save_format, showinfo_save_title
 from functional.calc_hash import Hash
 from frames.frames import FileFrame, HashFrame, InfoFrame
 from functional.work_with_csv import CSVSaver
@@ -32,10 +34,10 @@ class CRCSum(BaseToplevel):
                 info = self.hash.get_hash()
                 csv = CSVSaver(filepath, info)
                 csv.save()
-                showinfo(title='Успешное сохранение',
-                         message=self.successful_message.format('сохранена'))
+                showinfo(title=showinfo_save_title,
+                         message=self.successful_message.format(successful_message_save_format))
         except EmptyFilepathError:
-            showwarning(title="Предупреждение",
+            showwarning(title=showwarning_title,
                         message=self.filepath_warning_massage)
 
     def show_file_system(self):
@@ -49,10 +51,10 @@ class CRCSum(BaseToplevel):
                 self.file_frame.entry_filepath.insert(0, self.path)
                 self.hash_frame.hash_button['state'] = ACTIVE
         except ComboboxError:
-            showwarning(title="Предупреждение",
+            showwarning(title=showwarning_title,
                         message=self.combo_warning_massage)
         except EmptyFilepathError:
-            showwarning(title="Предупреждение",
+            showwarning(title=showwarning_title,
                         message=self.filepath_warning_massage)
 
     def start_calc_hash(self):
@@ -76,11 +78,6 @@ class CRCSum(BaseToplevel):
             self.after(self.ms_refresh, self.poll_queue)
         else:
             self.thread.join()
-            showinfo(title='Успешное завершение',
-                     message=self.successful_message.format('снята'))
+            showinfo(title=showinfo_end_title,
+                     message=self.successful_message.format(successful_message_end_format))
             self.change_state(True)
-
-
-# if __name__ == '__main__':
-#     app = CRCSum()
-#     app.mainloop()

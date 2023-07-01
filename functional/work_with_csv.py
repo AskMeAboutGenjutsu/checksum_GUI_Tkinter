@@ -1,5 +1,7 @@
 import csv
 
+from app_strings.app_strings import file_csv_title, files_csv_title
+
 
 class CSVSaver:
     def __init__(self, filepath, info):
@@ -21,12 +23,12 @@ class CSVSaver:
                 self._write(writer)
 
     def _write(self, writer):
-        writer.writerow(['№', 'Контрольная сумма', 'Файл'])
+        writer.writerow(file_csv_title)
         for i, (key, val) in enumerate(self.dict_info.items()):
             writer.writerow([i + 1, val, key])
 
     def _write_diff(self, writer):
-        writer.writerow(['№', 'Оригинал', 'Новый', 'Файл'])
+        writer.writerow(files_csv_title)
         for i, (key, val) in enumerate(self.dict_info.items()):
             if val[0] == val[1]:
                 writer.writerow([i + 1, val[0], val[1], key, True])

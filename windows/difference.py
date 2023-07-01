@@ -1,6 +1,7 @@
 from tkinter import SOLID, filedialog, END, DISABLED, ACTIVE
 from tkinter.messagebox import showwarning
 
+from app_strings.app_strings import empty, showwarning_message_length, showwarning_title
 from frames.frames import FileDiffFrame, HashFrame, InfoFrame
 from functional.work_with_csv import CSVParser
 from windows.base_toplevel import BaseToplevel
@@ -40,7 +41,7 @@ class Diff(BaseToplevel):
                 if self.flag and self.flag_csv:
                     self.hash_frame.hash_button['state'] = ACTIVE
         except EmptyFilepathError:
-            showwarning(title="Предупреждение",
+            showwarning(title=showwarning_title,
                         message=self.filepath_warning_massage)
 
     def change_state(self, state):
@@ -54,19 +55,20 @@ class Diff(BaseToplevel):
         new_info = self.hash.get_hash()
         self.info = self.update_info(info_csv, new_info)
         if len(info_csv) != len(new_info):
-            showwarning(title="Предупреждение",
-                    message='Разное количество файлов')
+            showwarning(title=showwarning_title,
+                    message=showwarning_message_length)
         self.change_state(True)
-        
-    def update_info(self, info_csv, new_info):
+
+    @staticmethod
+    def update_info(info_csv, new_info):
         info = {}
         for key, val in info_csv.items():
             if key in new_info:
                 info[key] = [val, new_info[key]]
             else:
-                info[key] = [val, 'Пусто']
+                info[key] = [val, empty]
         for key, val in new_info.items():
             if key not in info:
-                info[key] = ['Пусто', val]
+                info[key] = [empty, val]
         return info
 

@@ -1,5 +1,7 @@
 from tkinter import Tk, SOLID
 
+from app_strings.app_strings import main_menu_title, main_menu_size, checksum_window_title, diff_window_title, \
+    diff_window_size
 from windows.crc_sum import CRCSum
 from windows.difference import Diff
 from frames.frames import MainMenuFrame
@@ -8,8 +10,8 @@ from frames.frames import MainMenuFrame
 class MainMenu(Tk):
     def __init__(self):
         super().__init__()
-        self.title('CRC sum')
-        self.geometry('500x440+500+200')
+        self.title(main_menu_title)
+        self.geometry(main_menu_size)
         self.resizable(False, False)
         self.make_frame()
 
@@ -20,11 +22,11 @@ class MainMenu(Tk):
 
     def get_hash(self):
         self.withdraw()
-        self.hash_window = CRCSum(self, 'CRC Amount', '500x440+500+200')
+        self.hash_window = CRCSum(self, checksum_window_title, main_menu_size)
 
     def get_diff(self):
         self.withdraw()
-        self.diff_window = Diff(self, 'CRC difference', '500x500+500+100')
+        self.diff_window = Diff(self, diff_window_title, diff_window_size)
 
     def start(self):
         self.mainloop()

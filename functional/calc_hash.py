@@ -2,6 +2,8 @@ import hashlib
 import os
 import sys
 
+from app_strings.app_strings import win_platform
+
 
 class Hash:
     def __init__(self, path, callback):
@@ -40,4 +42,4 @@ class Hash:
         return self.hash_sum
 
     def _get_hash_object(self):
-        return hashlib.md5() if self._platform == 'win32' else hashlib.sha1()
+        return hashlib.md5() if self._platform == win_platform else hashlib.sha1()
