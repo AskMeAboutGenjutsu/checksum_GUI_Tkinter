@@ -70,7 +70,7 @@ class HashFrame(BaseFrame):
                                   text=save_button_text,
                                   command=self.master.save_hash,
                                   state=DISABLED)
-        self.save_button.place(x=360, y=10)
+        self.save_button.place(x=360, y=5)
         self.hash_button.place(x=5, y=5)
 
 

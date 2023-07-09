@@ -25,6 +25,8 @@ class Hash:
                 for file in files:
                     root = root.replace('\\', '/')
                     filepath = '/'.join((root, file))
+                    if self._is_link(filepath):
+                        continue
                     hash_file = self._calc_hash_file(filepath)
                     filepath = filepath.replace(self.path, '')
                     info = f'{hash_file}\t\t\t\t{filepath}\n'
@@ -37,6 +39,9 @@ class Hash:
             while data := file.read(self._chunk):
                 hash_file.update(data)
             return hash_file.hexdigest()
+
+    def _is_link(self, filepath):
+        return os.path.islink(filepath)
 
     def get_hash(self):
         return self.hash_sum
